@@ -37,20 +37,26 @@ and automatically creates firewall rules to block those IPs from accessing the s
 Program: (File name: firewall.py)
 import requests, csv, subprocess
 # source: Abuse CH
+rimport requests, csv, subprocess
+
+# source: Abuse CH
 response = requests.get(
-"https://feodotracker.abuse.ch/downloads/ipblocklist.csv"
+    "https://feodotracker.abuse.ch/downloads/ipblocklist.csv"
 ).text
+
 rule = 'netsh advfirewall firewall delete rule name="BadIP"'
 subprocess.run(["PowerShell", "-Command", rule])
+
 mycsv = csv.reader(
-filter(lambda x: not x.startswith("#"), response.splitlines())
+    filter(lambda x: not x.startswith("#"), response.splitlines())
 )
 for row in mycsv:
-ip = row[1]
-if ip != "dst_ip":
-print("Added Rule to block:", ip)
-rule = "netsh advfirewall firewall add rule name='BadIP' Dir=Out Action=Block RemoteIP=" + ip
-subprocess.run(["PowerShell", "-Command", rule])
+    ip = row[1]
+    if ip != "dst_ip":
+        print("Added Rule to block:", ip)
+        rule = "netsh advfirewall firewall add rule name='BadIP' Dir=Out Action=Block RemoteIP=" + ip
+        subprocess.run(["PowerShell", "-Command", rule])
+
 Sample Output:
 Added Rule to block: 45.9.148.221
 Added Rule to block: 103.17.48.5
@@ -77,6 +83,7 @@ o Open Windows Defender Firewall with Advanced Security
 o Go to Outbound Rules
 o Search for rule name: BadIP
 o You will see many blocked IP addresses listed
+
 Password Strength Testing using Python
 Write a Python program that accepts a password from the user and checks whether it is weak,
 medium, or strong based on the following rules:
@@ -87,29 +94,32 @@ medium, or strong based on the following rules:
 • Must contain at least one special character
 Program: (File name: password_checker.py)
 import re
+
 def check_password_strength(password):
-if len(password) < 8:
-return "Weak: Password must be at least 8 characters long."
-if not any(char.isdigit() for char in password):
-return "Weak: Password must include at least one number."
-if not any(char.isupper() for char in password):
-return "Weak: Password must include at least one uppercase letter."
-if not any(char.islower() for char in password):
-return "Weak: Password must include at least one lowercase letter."
-if not re.search(r'[!@#$%^&*(),.?":{}|<>]', password):
-return "Medium: Add special characters to make your password stronger."
-return "Strong: Your password is secure!"
+    if len(password) < 8:
+        return "Weak: Password must be at least 8 characters long."
+    if not any(char.isdigit() for char in password):
+        return "Weak: Password must include at least one number."
+    if not any(char.isupper() for char in password):
+        return "Weak: Password must include at least one uppercase letter."
+    if not any(char.islower() for char in password):
+        return "Weak: Password must include at least one lowercase letter."
+    if not re.search(r'[!@#$%^&*(),.?":{}|<>]', password):
+        return "Medium: Add special characters to make your password stronger."
+    return "Strong: Your password is secure!"
+
 def password_checker():
-print("Welcome to the Password Strength Checker!")
-while True:
-password = input("\nEnter your password (or type 'exit' to quit): ")
-if password.lower() == "exit":
-print("Thank you for using the Password Strength Checker! Goodbye!")
-break
-result = check_password_strength(password)
-print(result)
+    print("Welcome to the Password Strength Checker!")
+    while True:
+        password = input("\nEnter your password (or type 'exit' to quit): ")
+        if password.lower() == "exit":
+            print("Thank you for using the Password Strength Checker! Goodbye!")
+            break
+        result = check_password_strength(password)
+        print(result)
+
 if __name__ == "__main__":
-password_checker()
+    password_checker()
 Execution Steps:-
 1. Open Command Prompt or VS Code Terminal.
 2. Navigate to the folder where password_checker.py is saved
@@ -138,6 +148,7 @@ Input:
 Enter your password: Abc@1234
 Output:
 Strong: Your password is secure!
+
 Experiment: Analyzing Phishing Emails
 To analyze a suspicious email using EML Analyzer and VirusTotal and identify whether it is phishing
 based on technical indicators.
@@ -251,6 +262,7 @@ Conclusion :-
 Packets were successfully captured and analyzed. Sensitive data is visible when HTTP is used. Packet
 sniffing and network traffic analysis show that unencrypted communication is unsafe. HTTPS is
 necessary to protect data.
+
 SQL Injection Attack – Cyber Security Lab Experiment
 Target: Damn Vulnerable Web Application / WebGoat
 Platform: Kali Linux
@@ -356,6 +368,7 @@ information_schema is a system database in MySQL that stores metadata about data
 and columns.
 5. How to prevent SQL Injection?
 By using parameterized queries, input validation, least privilege access, and secure coding practices.
+
 Lab Experiment: Finding & Exploiting XSS
 Vulnerabilities using DVWA on Kali Linux
 Aim
@@ -636,4 +649,5 @@ VIVA VOCE QUESTIONS
 2. What is brute force attack?
 3. What is session hijacking?
 4. What is session fixation?
+
 5. How can session attacks be prevented?
